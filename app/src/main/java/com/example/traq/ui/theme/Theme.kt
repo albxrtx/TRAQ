@@ -26,10 +26,9 @@ private val LightColorPalette = lightColorScheme(
 
 @Composable
 fun TraqTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(), // Se adapta al tema oscuro si está habilitado
+    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    // Usamos MaterialTheme para envolver el contenido con el tema
     MaterialTheme(
         colorScheme = if (darkTheme) DarkColorPalette else LightColorPalette,
         typography = Typography,

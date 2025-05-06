@@ -16,7 +16,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -105,20 +107,21 @@ class LogInScreen : ComponentActivity() {
                 }
             }
         }
-
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 64.dp),
+                    .padding(horizontal = 16.dp, vertical = 50.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -131,13 +134,13 @@ class LogInScreen : ComponentActivity() {
                 Text(
                     modifier = Modifier.align(Alignment.Start),
                     text = "Consulta el estado de las líneas de transporte público en tiempo real. Comenta y comparte tus experiencias con la comunidad.",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Image(
                     modifier = Modifier
-                        .size(450.dp)
-                        .padding(top = 16.dp)
+                        .size(400.dp)
+                        .padding(top = 12.dp)
                         .fillMaxWidth(),
                     painter = painterResource(R.drawable.undraw),
                     contentDescription = "Logo de Traq"

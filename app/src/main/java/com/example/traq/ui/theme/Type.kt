@@ -10,9 +10,9 @@ import androidx.compose.ui.unit.sp
 val Typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.ExtraBold,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
+        lineHeight = 26.sp,
         letterSpacing = 0.5.sp
     ),
     bodySmall = TextStyle(
@@ -27,6 +27,13 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 36.sp,
         lineHeight = 46.sp,
+        letterSpacing = 0.5.sp
+    ),
+    titleMedium = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+        lineHeight = 36.sp,
         letterSpacing = 0.5.sp
     ),
     /* Other default text styles to override
