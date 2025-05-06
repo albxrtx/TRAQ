@@ -107,18 +107,21 @@ class LogInScreen : ComponentActivity() {
         }
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .navigationBarsPadding()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
-
         ) {
-            Column (modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 64.dp),
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 64.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)){
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
                 Text(
                     modifier = Modifier.align(Alignment.Start),
                     text = "Bienvenido a Traq",
@@ -132,12 +135,15 @@ class LogInScreen : ComponentActivity() {
                     color = MaterialTheme.colorScheme.primary
                 )
                 Image(
-                    modifier = Modifier.size(350.dp).padding(top = 32.dp).fillMaxWidth(),
-                    painter = painterResource(R.drawable.undraw_subway_66jh),
+                    modifier = Modifier
+                        .size(450.dp)
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
+                    painter = painterResource(R.drawable.undraw),
                     contentDescription = "Logo de Traq"
                 )
             }
-            Column (horizontalAlignment = Alignment.CenterHorizontally){
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     border = BorderStroke(2.dp, MaterialTheme.colorScheme.secondary),
@@ -147,7 +153,9 @@ class LogInScreen : ComponentActivity() {
                     )
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp, horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
@@ -162,7 +170,7 @@ class LogInScreen : ComponentActivity() {
                         )
                     }
                 }
-                Row (modifier = Modifier.padding(top=8.dp)){
+                Row(modifier = Modifier.padding(top = 12.dp)) {
                     Text(
                         text = "Al iniciar sesión, aceptas nuestros ",
                         style = MaterialTheme.typography.bodySmall,
@@ -176,7 +184,12 @@ class LogInScreen : ComponentActivity() {
                         textDecoration = TextDecoration.Underline,
                         modifier = Modifier
                             .clickable {
-                                context.startActivity(Intent(context, TermsAndConditionScreen::class.java))
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        TermsAndConditionScreen::class.java
+                                    )
+                                )
                             }
                     )
                 }
@@ -190,13 +203,16 @@ class LogInScreen : ComponentActivity() {
         }
     }
 
-    private var signInFlowLauncher by mutableStateOf<androidx.activity.result.ActivityResultLauncher<IntentSenderRequest>?>(null)
+    private var signInFlowLauncher by mutableStateOf<androidx.activity.result.ActivityResultLauncher<IntentSenderRequest>?>(
+        null
+    )
 
     private fun launchSignInFlow() {
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener { result ->
                 try {
-                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
                     signInFlowLauncher?.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
                     e.printStackTrace()
@@ -204,7 +220,8 @@ class LogInScreen : ComponentActivity() {
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
-                Toast.makeText(this, "No se pudo iniciar el inicio de sesión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No se pudo iniciar el inicio de sesión", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 }

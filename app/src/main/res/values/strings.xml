@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Traq</string>
     <string name="default_web_client_id">311218713123-0fsdj617cka3qj6lgaqjlodfpjmkppae.apps.googleusercontent.com</string>
+
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet...</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
 </resources>

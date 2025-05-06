@@ -14,5 +14,4 @@
 .cxx
 local.properties
 values/values.xml
-res/values/strings.xml
 /app/google-services.json
