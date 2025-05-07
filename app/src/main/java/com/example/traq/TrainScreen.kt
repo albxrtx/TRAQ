@@ -1,8 +1,9 @@
 package com.example.traq
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,25 +13,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.traq.components.Header
 import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.TraqTheme
 
-class BusScreen : AppCompatActivity() {
-
+class TrainScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TraqTheme {
-                BusScreenContent()
+                TrainScreenContent()
             }
         }
-
     }
 
     @Composable
-    private fun BusScreenContent() {
+    private fun TrainScreenContent() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -40,7 +40,7 @@ class BusScreen : AppCompatActivity() {
         ) {
             Header()
             Text(
-                text = "Esta es la pestaña de los autobuses"
+                text = "Esta es la pestaña de los trenes"
             )
             Navbar()
         }
