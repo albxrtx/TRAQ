@@ -41,7 +41,7 @@ class TermsAndConditionScreen : AppCompatActivity() {
                 .fillMaxSize()
                 .navigationBarsPadding()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(top = 46.dp, bottom = 16.dp , start = 16.dp, end = 16.dp)
+                .padding(top = 46.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.Start,

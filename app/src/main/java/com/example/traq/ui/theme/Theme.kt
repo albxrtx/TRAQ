@@ -29,8 +29,10 @@ fun TraqTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
+
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorPalette else LightColorPalette,
+        colorScheme = colors,
         typography = Typography,
         content = content
     )

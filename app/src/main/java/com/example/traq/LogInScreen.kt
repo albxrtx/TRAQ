@@ -63,12 +63,19 @@ class LogInScreen : ComponentActivity() {
                     .build()
             )
             .build()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
 
         setContent {
             TraqTheme {
-                LoginScreen(
-                    onSignInClicked = { launchSignInFlow() }
-                )
+                if (currentUser != null) {
+                    val intent = Intent(this@LogInScreen, BusScreen::class.java)
+                    startActivity(intent)
+                    finish()
+                } else
+                    LoginScreen(
+                        onSignInClicked = { launchSignInFlow() }
+                    )
             }
         }
     }
@@ -93,6 +100,11 @@ class LogInScreen : ComponentActivity() {
                                         "Bienvenido, ${user?.displayName}",
                                         Toast.LENGTH_SHORT
                                     ).show()
+
+                                    // 👉 Lanzar nueva Activity
+                                    val intent = Intent(this@LogInScreen, BusScreen::class.java)
+                                    startActivity(intent)
+                                    finish()
                                 } else {
                                     Toast.makeText(
                                         this@LogInScreen,
