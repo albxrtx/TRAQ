@@ -50,7 +50,6 @@ dependencies {
     // Libreria de Coil para las fotos de perfil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-
     // Jetpack Compose dependencies
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
