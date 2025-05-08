@@ -13,5 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+res/values/strings.xml
 values/values.xml
 app/google-services.json
