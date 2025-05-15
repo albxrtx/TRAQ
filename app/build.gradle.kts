@@ -50,7 +50,7 @@ dependencies {
     // Libreria de Coil para las fotos de perfil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-
+    // Libreria para Google Maps
     implementation("com.google.maps.android:maps-compose:4.2.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
@@ -58,8 +58,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
-
-    // Otros paquetes
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -69,9 +67,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
-
-    // Pruebas
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -20,16 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import com.example.traq.BusScreen
 import com.example.traq.SubwayScreen
 import com.example.traq.TermsAndConditionScreen
 import com.example.traq.TrainScreen
+import android.app.Activity
 
 @Composable
 fun Navbar() {
     val context = LocalContext.current
+    val activity = context as? Activity
+    val screenName = activity?.javaClass?.simpleName ?: "Unknown"
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,8 +46,7 @@ fun Navbar() {
             modifier = Modifier.clickable {
                 context.startActivity(
                     Intent(
-                        context,
-                        BusScreen::class.java
+                        context, BusScreen::class.java
                     )
                 )
             },
@@ -53,11 +56,12 @@ fun Navbar() {
             Icon(
                 painter = painterResource(com.example.traq.R.drawable.bus),
                 contentDescription = "Bus icon",
-                tint = Color.White,
+                tint = if (screenName == "BusScreen") Color.White else Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
             Text(
-                text = "Autobús", color = Color.White,
+                text = "Autobús",
+                color = if (screenName == "BusScreen") Color.White else Color.Gray,
                 style = MaterialTheme.typography.bodySmall
             )
         }
@@ -65,8 +69,7 @@ fun Navbar() {
             modifier = Modifier.clickable {
                 context.startActivity(
                     Intent(
-                        context,
-                        SubwayScreen::class.java
+                        context, SubwayScreen::class.java
                     )
                 )
             },
@@ -76,11 +79,12 @@ fun Navbar() {
             Icon(
                 painter = painterResource(com.example.traq.R.drawable.subway),
                 contentDescription = "Subway icon",
-                tint = Color.White,
+                tint = if (screenName == "SubwayScreen") Color.White else Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
             Text(
-                text = "Metro", color = Color.White,
+                text = "Metro",
+                color = if (screenName == "SubwayScreen") Color.White else Color.Gray,
                 style = MaterialTheme.typography.bodySmall
             )
         }
@@ -88,8 +92,7 @@ fun Navbar() {
             modifier = Modifier.clickable {
                 context.startActivity(
                     Intent(
-                        context,
-                        TrainScreen::class.java
+                        context, TrainScreen::class.java
                     )
                 )
             },
@@ -99,11 +102,12 @@ fun Navbar() {
             Icon(
                 painter = painterResource(com.example.traq.R.drawable.train),
                 contentDescription = "Train icon",
-                tint = Color.White,
+                tint = if (screenName == "TrainScreen") Color.White else Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
             Text(
-                text = "Tren", color = Color.White,
+                text = "Tren",
+                color = if (screenName == "TrainScreen") Color.White else Color.Gray,
                 style = MaterialTheme.typography.bodySmall
             )
         }

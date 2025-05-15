@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.traq.ui.theme.Blue50
 import com.example.traq.ui.theme.Blue60
@@ -126,6 +127,7 @@ class LogInScreen : ComponentActivity() {
                 .padding(16.dp)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
         ) {
             Column(
                 modifier = Modifier
@@ -134,25 +136,17 @@ class LogInScreen : ComponentActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    modifier = Modifier.align(Alignment.Start),
-                    text = "Bienvenido a Traq",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    modifier = Modifier.align(Alignment.Start),
-                    text = "Consulta el estado de las líneas de transporte público en tiempo real. Comenta y comparte tus experiencias con la comunidad.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
                 Image(
                     modifier = Modifier
-                        .size(400.dp)
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(),
-                    painter = painterResource(R.drawable.undraw),
-                    contentDescription = "Undraw image"
+                        .size(450.dp),
+                    painter = painterResource(R.drawable.log_in_image),
+                    contentDescription = "LogIn image"
+                )
+                Text(
+                    modifier = Modifier.align(Alignment.Start),
+                    text = "Accede y sigue tu ruta.",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
