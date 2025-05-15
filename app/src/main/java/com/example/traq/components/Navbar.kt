@@ -57,7 +57,8 @@ fun Navbar() {
                 modifier = Modifier.size(20.dp)
             )
             Text(
-                text = "Autobús", color = Color.White
+                text = "Autobús", color = Color.White,
+                style = MaterialTheme.typography.bodySmall
             )
         }
         Column(
@@ -79,7 +80,8 @@ fun Navbar() {
                 modifier = Modifier.size(20.dp)
             )
             Text(
-                text = "Metro", color = Color.White
+                text = "Metro", color = Color.White,
+                style = MaterialTheme.typography.bodySmall
             )
         }
         Column(
@@ -101,7 +103,8 @@ fun Navbar() {
                 modifier = Modifier.size(20.dp)
             )
             Text(
-                text = "Trenes", color = Color.White
+                text = "Tren", color = Color.White,
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

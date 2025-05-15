@@ -50,6 +50,10 @@ dependencies {
     // Libreria de Coil para las fotos de perfil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
+
+    implementation("com.google.maps.android:maps-compose:4.2.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
     // Jetpack Compose dependencies
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

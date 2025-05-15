@@ -47,15 +47,15 @@ class TermsAndConditionScreen : AppCompatActivity() {
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = "Términos y condiciones de Uso",
+                text = "Términos y Condiciones de Uso",
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onBackground
             )
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "1. Introducción",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Traq se trata de una aplicación móvil desarrollada para mantenerte informado en tiempo real sobre las líneas de transporte público de España " +
@@ -63,14 +63,14 @@ class TermsAndConditionScreen : AppCompatActivity() {
                             "\nSi no estás de acuerdo con algunos de ellos, le rogamos que no utilize nuestra aplicación" +
                             "\nEl uso de Traq implica la aceptación plena y sin reservas de todos los términos incluidos en este documento.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "2. Uso de la app",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Traq ofrece posibilidades como: " +
@@ -82,14 +82,14 @@ class TermsAndConditionScreen : AppCompatActivity() {
                             "\n· No manipular la información mostrada ni interferir en el funcionamiento del sistema." +
                             "\n· La utilización indebida de Traq podrá derivar en la suspensión temporal o definitiva del acceso a la aplicación.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "3. Registro e Inicio de Sesión",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Para acceder a la aplicación es necesario registrarse previamente con una cuenta de Google." +
@@ -97,14 +97,14 @@ class TermsAndConditionScreen : AppCompatActivity() {
                             "\nEl usuario es responsable de mantener la confidencialidad de sus credenciales de acceso y de todas las actividades que ocurran bajo su cuenta." +
                             " Si detectas un uso no autorizado, deberás notificarlo de inmediato.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "4. Derechos de Propiedad Intelectual",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Todos los derechos de propiedad intelectual sobre el diseño, interfaz, funcionalidades, código fuente y contenidos originales de Traq pertenecen exclusivamente a sus desarrolladores." +
@@ -112,38 +112,38 @@ class TermsAndConditionScreen : AppCompatActivity() {
                             "\n· Copiar, reproducir, distribuir o modificar cualquier parte de la app sin autorización." +
                             "\n· Usar elementos de la app con fines comerciales sin consentimiento previo por escrito.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "5. Política de Privacidad",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Traq respeta tu privacidad. Recopilamos y tratamos datos mínimos necesarios para el correcto funcionamiento de la app, como el proveedor de acceso (Google) y los comentarios que decides enviar.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "6. Limitación de Responsabilidad",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Traq respeta tu privacidad. Recopilamos y tratamos datos mínimos necesarios para el correcto funcionamiento de la app, como el proveedor de acceso (Google) y los comentarios que decides enviar.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "7. Terminación",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Su cuenta se suspenderá en el caso de que:" +
@@ -151,19 +151,19 @@ class TermsAndConditionScreen : AppCompatActivity() {
                             "\n· Comprometa la seguridad o integridad de la plataforma." +
                             "\n· Utilice la app con fines maliciosos o ilegales",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "8. Contacto",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Para cualquier consulta, reclamación o solicitud relacionada con la aplicación, puedes escribirnos a: traq.app.co@gmail.com",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

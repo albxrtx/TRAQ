@@ -12,29 +12,26 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.traq.ui.theme.Blue50
+import com.example.traq.ui.theme.Blue60
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -58,13 +55,13 @@ class LogInScreen : ComponentActivity() {
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    .setServerClientId(getString(R.string.default_web_client_id)) // Este es tu client ID
+                    .setServerClientId(getString(R.string.default_web_client_id))
                     .setFilterByAuthorizedAccounts(false)
                     .build()
             )
             .build()
-        val currentUser = FirebaseAuth.getInstance().currentUser
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
         setContent {
             TraqTheme {
@@ -101,7 +98,6 @@ class LogInScreen : ComponentActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
 
-                                    // 👉 Lanzar nueva Activity
                                     val intent = Intent(this@LogInScreen, BusScreen::class.java)
                                     startActivity(intent)
                                     finish()
@@ -124,16 +120,17 @@ class LogInScreen : ComponentActivity() {
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-                .background(MaterialTheme.colorScheme.background)
+                .background(
+                    MaterialTheme.colorScheme.background
+                )
                 .padding(16.dp)
                 .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 50.dp),
+                    .padding(horizontal = 0.dp, vertical = 46.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -141,13 +138,13 @@ class LogInScreen : ComponentActivity() {
                     modifier = Modifier.align(Alignment.Start),
                     text = "Bienvenido a Traq",
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     modifier = Modifier.align(Alignment.Start),
                     text = "Consulta el estado de las líneas de transporte público en tiempo real. Comenta y comparte tus experiencias con la comunidad.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Image(
                     modifier = Modifier
@@ -155,13 +152,13 @@ class LogInScreen : ComponentActivity() {
                         .padding(top = 12.dp)
                         .fillMaxWidth(),
                     painter = painterResource(R.drawable.undraw),
-                    contentDescription = "Logo de Traq"
+                    contentDescription = "Undraw image"
                 )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.secondary),
+                    border = BorderStroke(2.dp, Blue50),
                     onClick = { onSignInClicked() },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent
@@ -176,35 +173,31 @@ class LogInScreen : ComponentActivity() {
                     ) {
                         Image(
                             painter = painterResource(R.drawable.logo_google),
-                            contentDescription = "Logo de Google"
+                            contentDescription = "Google logo"
                         )
                         Text(
                             text = "Iniciar sesión con Google",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Blue50
                         )
                     }
                 }
-                Row(modifier = Modifier.padding(top = 12.dp)) {
+                Row(modifier = Modifier.padding(top = 16.dp)) {
                     Text(
                         text = "Al iniciar sesión, aceptas nuestros ",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onBackground
                     )
-                    val context = LocalContext.current
                     Text(
                         text = "términos y condiciones",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onBackground,
                         textDecoration = TextDecoration.Underline,
                         modifier = Modifier
                             .clickable {
-                                context.startActivity(
-                                    Intent(
-                                        context,
-                                        TermsAndConditionScreen::class.java
-                                    )
-                                )
+                                val intent =
+                                    Intent(this@LogInScreen, TermsAndConditionScreen::class.java)
+                                startActivity(intent)
                             }
                     )
                 }
