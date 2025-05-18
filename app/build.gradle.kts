@@ -54,6 +54,9 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:4.2.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
+    // Libreria para la ubicacion del usuario
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
     // Jetpack Compose dependencies
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

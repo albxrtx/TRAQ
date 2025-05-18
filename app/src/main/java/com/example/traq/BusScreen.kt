@@ -1,6 +1,7 @@
 package com.example.traq
 
 import BusRoute
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
@@ -35,9 +36,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import com.example.traq.components.Header
 import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.TraqTheme
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Circle
@@ -50,18 +54,66 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import routes
 import route1
 
-import java.util.Calendar
+import android.Manifest
+import android.location.Location
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+
 
 class BusScreen : AppCompatActivity() {
 
+    // Declaramos una variable de tipo FusedLocationProviderClient para obtener la ubicacion
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    // Declaramos variables para guardar la ubicaión
+    private var userLat: Double? = null
+    private var userLong: Double? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inizializamos la variable fusedLocationClient con la Activity actual
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         setContent {
             TraqTheme {
                 BusScreenContent()
             }
         }
+        // Obtenemos la ubicacion del usuario
+        getUserLocation()
 
+    }
+
+    // Funcion para obtener la ubicacion del usuario
+    private fun getUserLocation() {
+        // Comprobamos si los permisos necesarios para obtener la ubicacion han sido aceptados
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Solicitamos permisos para obtener la ubicación
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            return
+        }
+        // Una vez que el usuario haya aceptado los permisos obtenemos su ubicacion
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                userLat = location.latitude
+                userLong = location.longitude
+            }
+        }
+    }
+
+    // Funcion/pantalla para aceptar los permisos
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        // Si acepta los permisos llamamaos a la funcion para obtener su ubicacion
+        if (isGranted) {
+            getUserLocation()
+        }
     }
 
     @Composable
@@ -128,7 +180,6 @@ class BusScreen : AppCompatActivity() {
                             RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp)
                         )
                     ) {
-                        val actualStop = route1.stops[4]
                         Row(
                             modifier = Modifier
                                 .background(
@@ -138,7 +189,7 @@ class BusScreen : AppCompatActivity() {
                         ) {
                             Text(
                                 modifier = Modifier.padding(16.dp),
-                                text = "Parada actual: ${actualStop.name}",
+                                text = "Ubicacion actual: $userLat + $userLong",
                                 color = MaterialTheme.colorScheme.onBackground
                             )
                         }
@@ -154,8 +205,7 @@ class BusScreen : AppCompatActivity() {
     private fun displayGoogleMap(route: BusRoute) {
         val cameraPositionState = rememberCameraPositionState {
             position = CameraPosition.fromLatLngZoom(
-                LatLng(40.10451921563171, -3.6939612498723546),
-                16f
+                LatLng(40.10451921563171, -3.6939612498723546), 16f
             )
         }
 
@@ -164,8 +214,7 @@ class BusScreen : AppCompatActivity() {
                 .fillMaxWidth()
                 .height(250.dp)
                 .padding(horizontal = 10.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            cameraPositionState = cameraPositionState
+                .clip(RoundedCornerShape(10.dp)), cameraPositionState = cameraPositionState
         ) {
             route.stops.forEach { stop ->
                 Circle(
