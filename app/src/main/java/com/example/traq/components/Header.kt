@@ -89,8 +89,16 @@ fun Header() {
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Text(text = name, fontWeight = FontWeight.Bold, color = Color.White)
-                Text(text = email, style = MaterialTheme.typography.bodySmall, color = Color.White)
+                Text(
+                    text = name,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Text(
+                    text = email,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
 
             Spacer(modifier = Modifier.width(16.dp))

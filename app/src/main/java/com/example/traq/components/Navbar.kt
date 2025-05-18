@@ -56,12 +56,12 @@ fun Navbar() {
             Icon(
                 painter = painterResource(com.example.traq.R.drawable.bus),
                 contentDescription = "Bus icon",
-                tint = if (screenName == "BusScreen") Color.White else Color.Gray,
+                tint = if (screenName == "BusScreen") MaterialTheme.colorScheme.onBackground else Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
             Text(
                 text = "Autobús",
-                color = if (screenName == "BusScreen") Color.White else Color.Gray,
+                color = if (screenName == "BusScreen") MaterialTheme.colorScheme.onBackground else Color.Gray,
                 style = MaterialTheme.typography.bodySmall
             )
         }
@@ -79,12 +79,12 @@ fun Navbar() {
             Icon(
                 painter = painterResource(com.example.traq.R.drawable.subway),
                 contentDescription = "Subway icon",
-                tint = if (screenName == "SubwayScreen") Color.White else Color.Gray,
+                tint = if (screenName == "SubwayScreen") MaterialTheme.colorScheme.onBackground else Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
             Text(
                 text = "Metro",
-                color = if (screenName == "SubwayScreen") Color.White else Color.Gray,
+                color = if (screenName == "SubwayScreen") MaterialTheme.colorScheme.onBackground else Color.Gray,
                 style = MaterialTheme.typography.bodySmall
             )
         }
@@ -102,12 +102,12 @@ fun Navbar() {
             Icon(
                 painter = painterResource(com.example.traq.R.drawable.train),
                 contentDescription = "Train icon",
-                tint = if (screenName == "TrainScreen") Color.White else Color.Gray,
+                tint = if (screenName == "TrainScreen") MaterialTheme.colorScheme.onBackground else Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
             Text(
                 text = "Tren",
-                color = if (screenName == "TrainScreen") Color.White else Color.Gray,
+                color = if (screenName == "TrainScreen") MaterialTheme.colorScheme.onBackground else Color.Gray,
                 style = MaterialTheme.typography.bodySmall
             )
         }
