@@ -57,6 +57,10 @@ dependencies {
     // Libreria para la ubicacion del usuario
     implementation ("com.google.android.gms:play-services-location:21.0.1")
 
+    // Libreria para Firestore
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-firestore")
+
     // Jetpack Compose dependencies
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
