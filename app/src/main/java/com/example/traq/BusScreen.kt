@@ -55,6 +55,7 @@ import routes
 import android.Manifest
 import android.location.Location
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.interaction.MutableInteractionSource
 
 
 class BusScreen : AppCompatActivity() {
@@ -114,7 +115,10 @@ class BusScreen : AppCompatActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) { expanded = !expanded }
                     .padding(16.dp)
                     .animateContentSize()) {
                 Row(
