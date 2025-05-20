@@ -127,13 +127,13 @@ fun Header() {
                         Text(
                             text = "Cerrar sesión",
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             painter = painterResource(id = com.example.traq.R.drawable.logout),
                             contentDescription = "LogOut icon",
-                            tint = MaterialTheme.colorScheme.secondary,
+                            tint = MaterialTheme.colorScheme.onBackground,
                             modifier = Modifier.size(15.dp)
                         )
                     }

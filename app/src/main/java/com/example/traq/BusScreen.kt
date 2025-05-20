@@ -58,6 +58,11 @@ import android.location.Location
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import com.example.traq.ui.theme.Blue50
+import com.example.traq.ui.theme.Blue60
+import com.example.traq.ui.theme.Blue70
 
 
 class BusScreen : AppCompatActivity() {
@@ -127,7 +132,7 @@ class BusScreen : AppCompatActivity() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        MaterialTheme.colorScheme.secondary, if (expandido) RoundedCornerShape(
+                        Blue70, if (expandido) RoundedCornerShape(
                             12.dp, 12.dp, 0.dp, 0.dp
                         ) else RoundedCornerShape(12.dp, 12.dp, 12.dp, 12.dp)
                     )
@@ -147,10 +152,11 @@ class BusScreen : AppCompatActivity() {
 
             if (expandido) {
                 Column(
-                    modifier = Modifier.background(
-                        MaterialTheme.colorScheme.tertiary,
-                        RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp)
-                    )
+                    modifier = Modifier
+                        .background(
+                            Blue60, RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp)
+                        )
+                        .padding(16.dp)
                 ) {
                     // Creamos una variable con la parada mas cercana si el usuario ha concedido su ubicacion
                     val paradaCercana = if (userLat != null && userLong != null) {
@@ -158,20 +164,14 @@ class BusScreen : AppCompatActivity() {
                     } else {
                         null
                     }
-                    Row(
-                        modifier = Modifier
-                            .background(
-                                MaterialTheme.colorScheme.tertiary
-                            )
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(16.dp),
-                            // Mostramos el nombre de la parada mas cercana o un mensaje predeterminado
-                            text = "Parada cercana: ${paradaCercana?.name ?: "Ubicacion desconocida"}",
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        // Mostramos el nombre de la parada mas cercana o un mensaje predeterminado
+                        text =
+                            "Parada cercana: ${paradaCercana?.name ?: "Ubicacion desconocida"}",
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
                     // Llamamos a la función para mostrar el mapa
                     MostrarMapaGoogle(route, paradaCercana, userLat, userLong)
                 }
@@ -185,24 +185,21 @@ class BusScreen : AppCompatActivity() {
         route: BusRoute, paradaCercana: BusStop?, userLat: Double?, userLong: Double?
     ) {
         val cameraPositionState = rememberCameraPositionState {
-            position =
-                if (userLat != null && userLong != null) {
-                    CameraPosition.fromLatLngZoom(
-                        LatLng(paradaCercana?.latitude ?: 40.00, paradaCercana?.longitude ?: 40.00),
-                        16f
-                    )
-                } else {
-                    CameraPosition.fromLatLngZoom(
-                        LatLng(40.10451921563171, -3.6939612498723546), 16f
-                    )
-                }
+            position = if (userLat != null && userLong != null) {
+                CameraPosition.fromLatLngZoom(
+                    LatLng(paradaCercana?.latitude ?: 40.00, paradaCercana?.longitude ?: 40.00), 16f
+                )
+            } else {
+                CameraPosition.fromLatLngZoom(
+                    LatLng(40.10451921563171, -3.6939612498723546), 16f
+                )
+            }
         }
 
         GoogleMap(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
-                .padding(horizontal = 10.dp)
                 .clip(RoundedCornerShape(10.dp)), cameraPositionState = cameraPositionState
         ) {
             // Recorremos cada parada y creamos un marca en ella
@@ -313,6 +310,6 @@ class BusScreen : AppCompatActivity() {
         }
         return paradaCercana
     }
-}
 
+}
 
