@@ -67,7 +67,7 @@ class LogInScreen : ComponentActivity() {
         setContent {
             TraqTheme {
                 if (currentUser != null) {
-                    val intent = Intent(this@LogInScreen, AlertsScreen::class.java)
+                    val intent = Intent(this@LogInScreen, BusScreen::class.java)
                     startActivity(intent)
                     finish()
                 } else

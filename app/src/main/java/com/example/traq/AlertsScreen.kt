@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -58,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import com.example.traq.components.Header
 import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.Blue50
+import com.example.traq.ui.theme.Blue70
 import com.example.traq.ui.theme.TraqTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -82,7 +84,7 @@ class AlertsScreen : AppCompatActivity() {
     }
 }
 
-data class Mensaje(
+data class Alerta(
     val nombreUsuario: String = "",
     val fecha: String = "",
     val lineaTransporte: String = "",
@@ -93,25 +95,25 @@ data class Mensaje(
 
 @Composable
 private fun AlertsScreenContent() {
-    val db = FirebaseFirestore.getInstance()
-
-    val context = LocalContext.current
-
-    var mensajes by remember { mutableStateOf<List<Mensaje>>(emptyList()) }
-    var cargando by remember { mutableStateOf(true) }
-    var error by remember { mutableStateOf<String?>(null) }
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+    var mostrarFormulario by remember { mutableStateOf(false) }
+
+    // Obtenemos una instancia de nuestra base de datos
+    val db = FirebaseFirestore.getInstance()
+    // Creamos una lista de Mensajes vacia
+    var alertas by remember { mutableStateOf<List<Alerta>>(emptyList()) }
 
     var linea by remember { mutableStateOf("") }
     var asunto by remember { mutableStateOf("") }
     var mensaje by remember { mutableStateOf("") }
-    var mostrarFormulario by remember { mutableStateOf(false) }
 
+    // Funcion que se "lanza" al cargar el Composable
     LaunchedEffect(Unit) {
         db.collection("Mensajes").get()
             .addOnSuccessListener { result ->
-                mensajes = result.documents.map { doc ->
-                    Mensaje(
+                alertas = result.documents.map { doc ->
+                    Alerta(
                         nombreUsuario = doc.getString("nombreUsuario") ?: "",
                         fecha = doc.getString("fecha") ?: "",
                         lineaTransporte = doc.getString("lineaTransporte") ?: "",
@@ -119,11 +121,8 @@ private fun AlertsScreenContent() {
                         mensaje = doc.getString("mensaje") ?: ""
                     )
                 }
-                cargando = false
-            }
-            .addOnFailureListener { e ->
-                error = e.localizedMessage
-                cargando = false
+            }.addOnFailureListener { e ->
+                Log.e("Firestore", "Error al leer los datos de la base de datos", e)
             }
     }
     Column(
@@ -140,13 +139,14 @@ private fun AlertsScreenContent() {
                 .verticalScroll(scrollState)
                 .fillMaxHeight(),
         ) {
-            mensajes.forEach { m ->
+            // Recorremos la lista con alertas y creamos una Card con los datos de cada alerta
+            alertas.forEach { alerta ->
                 AlertCard(
-                    usuario = m.nombreUsuario,
-                    linea = m.lineaTransporte,
-                    asunto = m.asunto,
-                    mensaje = m.mensaje,
-                    fecha = m.fecha
+                    usuario = alerta.nombreUsuario,
+                    linea = alerta.lineaTransporte,
+                    asunto = alerta.asunto,
+                    mensaje = alerta.mensaje,
+                    fecha = alerta.fecha
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -158,7 +158,7 @@ private fun AlertsScreenContent() {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            var mostrarFormulario by remember { mutableStateOf(false) }
+
             Button(
                 onClick = {
                     mostrarFormulario = !mostrarFormulario
@@ -181,15 +181,18 @@ private fun AlertsScreenContent() {
                     onDismissRequest = { mostrarFormulario = false }, confirmButton = {
                         Button(
                             onClick = {
-                                añadirMensajeFireStore(linea, asunto, mensaje)
+                                // Llamamos a la funcion para añadir la alerta a Firestore
+                                anadirAlerta(linea, asunto, mensaje)
+                                // Ocultamos el formulario
                                 mostrarFormulario = false
-
+                                // Volvemos a lanzar la Activity para actualizar la pantalla
                                 context.startActivity(
                                     Intent(
                                         context, AlertsScreen::class.java
                                     )
                                 )
                             },
+                            // Comprobamos que todos los campos han sido rellenados
                             enabled = linea.isNotBlank() && asunto.isNotBlank() && mensaje.isNotBlank(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Blue50
@@ -240,14 +243,15 @@ private fun AlertsScreenContent() {
 }
 
 
-private fun añadirMensajeFireStore(linea: String, asunto: String, mensaje: String) {
-
+private fun anadirAlerta(linea: String, asunto: String, mensaje: String) {
+    // Creamos una instancia del usuario actual y recogemos su nombre
     val user = FirebaseAuth.getInstance().currentUser
     val nombreUsuario = user?.displayName
-
+    // Creamos un formato para la fecha y recogemos la hora actual del dispositivo
     val formatoFecha = SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault())
     val fecha = formatoFecha.format(Date())
 
+    // Creamos un mensaje nuevo con los datos obtenidos anteriormente
     val mensajeNuevo = hashMapOf(
         "lineaTransporte" to linea,
         "asunto" to asunto,
@@ -255,14 +259,14 @@ private fun añadirMensajeFireStore(linea: String, asunto: String, mensaje: Stri
         "nombreUsuario" to nombreUsuario,
         "fecha" to fecha
     )
-
-    db.collection("Mensajes").add(mensajeNuevo).addOnSuccessListener { documentReference ->
-        Log.d(
-            "Firestore", "Mensaje añadido con id: $documentReference.id"
-        )
-    }.addOnFailureListener { e ->
-        Log.w("Firestore", "No se ha podido guardar el mensaje", e)
-    }
+    // Añadimos el mensaje a la colección
+    db.collection("Mensajes")
+        .add(mensajeNuevo)
+        .addOnSuccessListener { documentReference ->
+            Log.d("Firestore", "Mensaje añadido con id: $documentReference.id")
+        }.addOnFailureListener { e ->
+            Log.w("Firestore", "No se ha podido guardar el mensaje", e)
+        }
 }
 
 
@@ -274,14 +278,16 @@ private fun AlertCard(
     Column(
         modifier = Modifier
             .background(
-                Blue50, RoundedCornerShape(10.dp)
+                Blue70, RoundedCornerShape(10.dp)
             )
             .padding(20.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() }, indication = null
             ) {
                 expandido = !expandido
-            }, verticalArrangement = Arrangement.SpaceEvenly
+            }
+            .animateContentSize(),
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(

@@ -53,7 +53,9 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import routes
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.location.Location
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.interaction.MutableInteractionSource
 
@@ -78,7 +80,7 @@ class BusScreen : AppCompatActivity() {
             }
         }
         // Obtenemos la ubicacion del usuario
-        getUserLocation()
+        obtenerUbicacion()
 
     }
 
@@ -100,79 +102,78 @@ class BusScreen : AppCompatActivity() {
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.Start
             ) {
-                BusCard()
+                routes.forEach { route ->
+                    BusCard(route)
+                }
             }
             Navbar()
         }
     }
 
     @Composable
-    private fun BusCard() {
-        routes.forEach { route ->
+    private fun BusCard(route: BusRoute) {
 
-            var expanded by remember { mutableStateOf(false) }
+        var expandido by remember { mutableStateOf(false) }
 
-            Column(
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() }, indication = null
+                ) { expandido = !expandido }
+                .padding(16.dp)
+                .animateContentSize()) {
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) { expanded = !expanded }
-                    .padding(16.dp)
-                    .animateContentSize()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            MaterialTheme.colorScheme.secondary, if (expanded) RoundedCornerShape(
-                                12.dp, 12.dp, 0.dp, 0.dp
-                            ) else RoundedCornerShape(12.dp, 12.dp, 12.dp, 12.dp)
-                        )
-                        .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Icon(
-                        painter = painterResource(com.example.traq.R.drawable.bus),
-                        contentDescription = "Bus icon",
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(20.dp)
+                    .background(
+                        MaterialTheme.colorScheme.secondary, if (expandido) RoundedCornerShape(
+                            12.dp, 12.dp, 0.dp, 0.dp
+                        ) else RoundedCornerShape(12.dp, 12.dp, 12.dp, 12.dp)
                     )
-                    Text(
-                        text = "${route.name} - ${route.city}",
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
+                    .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Icon(
+                    painter = painterResource(com.example.traq.R.drawable.bus),
+                    contentDescription = "Bus icon",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(20.dp)
+                )
+                Text(
+                    text = "${route.name} - ${route.city}",
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
 
-                if (expanded) {
-                    Column(
-                        modifier = Modifier.background(
-                            MaterialTheme.colorScheme.tertiary,
-                            RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp)
-                        )
-                    ) {
-                        // Creamos una variable con la parada mas cercana si el usuario ha concedido su ubicacion
-                        val closestStop = if (userLat != null && userLong != null) {
-                            findClosestStop(userLat!!, userLong!!, route.stops)
-                        } else {
-                            null
-                        }
-                        Row(
-                            modifier = Modifier
-                                .background(
-                                    MaterialTheme.colorScheme.tertiary
-                                )
-                                .fillMaxWidth()
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(16.dp),
-                                // Mostramos el nombre de la parada mas cercana o un mensaje predeterminado
-                                text = "Parada cercana: ${closestStop?.name ?: "Ubicacion desconocida"}",
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-                        // Llamamos a la función para mostrar el mapa
-                        displayGoogleMap(route, closestStop)
+            if (expandido) {
+                Column(
+                    modifier = Modifier.background(
+                        MaterialTheme.colorScheme.tertiary,
+                        RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp)
+                    )
+                ) {
+                    // Creamos una variable con la parada mas cercana si el usuario ha concedido su ubicacion
+                    val paradaCercana = if (userLat != null && userLong != null) {
+                        encontrarParaMasCercana(userLat!!, userLong!!, route.stops)
+                    } else {
+                        null
                     }
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                MaterialTheme.colorScheme.tertiary
+                            )
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            // Mostramos el nombre de la parada mas cercana o un mensaje predeterminado
+                            text = "Parada cercana: ${paradaCercana?.name ?: "Ubicacion desconocida"}",
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                    // Llamamos a la función para mostrar el mapa
+                    MostrarMapaGoogle(route, paradaCercana, userLat, userLong)
                 }
             }
         }
@@ -180,12 +181,21 @@ class BusScreen : AppCompatActivity() {
     }
 
     @Composable
-    private fun displayGoogleMap(route: BusRoute, closestStop: BusStop?) {
-        // Declaramos la posicion inicial del mapa
+    private fun MostrarMapaGoogle(
+        route: BusRoute, paradaCercana: BusStop?, userLat: Double?, userLong: Double?
+    ) {
         val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(
-                LatLng(40.10451921563171, -3.6939612498723546), 16f
-            )
+            position =
+                if (userLat != null && userLong != null) {
+                    CameraPosition.fromLatLngZoom(
+                        LatLng(paradaCercana?.latitude ?: 40.00, paradaCercana?.longitude ?: 40.00),
+                        16f
+                    )
+                } else {
+                    CameraPosition.fromLatLngZoom(
+                        LatLng(40.10451921563171, -3.6939612498723546), 16f
+                    )
+                }
         }
 
         GoogleMap(
@@ -205,14 +215,21 @@ class BusScreen : AppCompatActivity() {
                     fillColor = Color.Blue
                 )
             }
+            if (userLat != null && userLong != null) {
+                Circle(
+                    center = LatLng(userLat, userLong),
+                    radius = 10.0,
+                    strokeColor = Color.Green,
+                    strokeWidth = 2f,
+                    fillColor = Color.Green
+                )
+            }
             // Creamos un Marker con la ubicacion y nombre de la parada maas cercana
-            if (closestStop != null) {
+            if (paradaCercana != null) {
                 Marker(
-                    title = "Parada mas cercana \n${closestStop.name}",
-                    state = MarkerState(
+                    title = "Parada mas cercana \n${paradaCercana.name}", state = MarkerState(
                         position = LatLng(
-                            closestStop.latitude,
-                            closestStop.longitude
+                            paradaCercana.latitude, paradaCercana.longitude
                         )
                     )
                 )
@@ -230,7 +247,7 @@ class BusScreen : AppCompatActivity() {
     }
 
     // Funcion para obtener la ubicacion del usuario
-    private fun getUserLocation() {
+    private fun obtenerUbicacion() {
         // Comprobamos si los permisos necesarios para obtener la ubicacion han sido aceptados
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION
@@ -240,14 +257,18 @@ class BusScreen : AppCompatActivity() {
         ) {
             // Solicitamos permisos para obtener la ubicación
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            // Evitamos que el codigo se siga ejecutando hasta que el usuario no haya aceptado los permisos
             return
         }
         // Una vez que el usuario haya aceptado los permisos obtenemos su ubicacion
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            // Comprobamos que haya una ubicacion
             if (location != null) {
                 userLat = location.latitude
                 userLong = location.longitude
             }
+        }.addOnFailureListener { exception ->
+            Log.e("Ubicacion", "Hubo problemas al obtener la ubicación", exception)
         }
     }
 
@@ -257,40 +278,40 @@ class BusScreen : AppCompatActivity() {
     ) { isGranted: Boolean ->
         // Si acepta los permisos llamamaos a la funcion para obtener su ubicacion
         if (isGranted) {
-            getUserLocation()
+            obtenerUbicacion()
         }
     }
 
     // funcion para encontrar la parada mas cercana
-    fun findClosestStop(userLat: Double, userLong: Double, stops: List<BusStop>): BusStop? {
+    fun encontrarParaMasCercana(userLat: Double, userLong: Double, stops: List<BusStop>): BusStop? {
         // Inicializamos la parada cercana a null
-        var closestStop: BusStop? = null
+        var paradaCercana: BusStop? = null
         // Le damos el maximo valor que pueda contener un float
-        var shortestDistance = Float.MAX_VALUE
+        var distanciaMasCorta = Float.MAX_VALUE
 
         // Creamos un objeto de tipo Location con los datos del usuario
-        val userLocation = Location("user").apply {
+        val ubicacionUsuario = Location("user").apply {
             latitude = userLat
             longitude = userLong
         }
         // Recorremos las paradas que hemos pasado
         for (stop in stops) {
             // Por cada parada creamos un objeto de tipo Location
-            val stopLocation = Location("stop").apply {
+            val ubicacionParada = Location("stop").apply {
                 latitude = stop.latitude
                 longitude = stop.longitude
             }
             // Calculamos la distancia entre las dos ubicaciones
-            val distanceBetween = userLocation.distanceTo(stopLocation)
+            val distanciaEntreUbicaciones = ubicacionUsuario.distanceTo(ubicacionParada)
             // Comprobamos la distancia mas corta entre dos ubicaciones
-            if (distanceBetween < shortestDistance) {
-                shortestDistance = distanceBetween
+            if (distanciaEntreUbicaciones < distanciaMasCorta) {
                 // Actualizamos la parada mas cercana con la actual
-                closestStop = stop
+                distanciaMasCorta = distanciaEntreUbicaciones
+                paradaCercana = stop
             }
 
         }
-        return closestStop
+        return paradaCercana
     }
 }
 

@@ -60,11 +60,11 @@ import kotlin.Unit.toString
 
 @Composable
 fun Header() {
-    var expanded by remember { mutableStateOf(false) }
-    val user = FirebaseAuth.getInstance().currentUser
-    val name = user?.displayName ?: "Usuario"
-    val email = user?.email ?: "Sin correo"
-    val urlProfilePic = user?.photoUrl
+    var expandido by remember { mutableStateOf(false) }
+    val usuario = FirebaseAuth.getInstance().currentUser
+    val nombre = usuario?.displayName ?: "Usuario"
+    val email = usuario?.email ?: "Sin correo"
+    val urlFotoPerfil = usuario?.photoUrl
 
     val context = LocalContext.current
 
@@ -90,7 +90,7 @@ fun Header() {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = name,
+                    text = nombre,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -104,15 +104,15 @@ fun Header() {
             Spacer(modifier = Modifier.width(16.dp))
 
             AsyncImage(
-                model = urlProfilePic,
+                model = urlFotoPerfil,
                 contentDescription = "Foto de perfil",
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(46.dp)
-                    .clickable { expanded = !expanded })
+                    .clickable { expandido = !expandido })
         }
 
-        if (expanded) {
+        if (expandido) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(
@@ -120,7 +120,7 @@ fun Header() {
             ) {
                 Button(
                     border = BorderStroke(2.dp, Color.White),
-                    onClick = { logOut(context) },
+                    onClick = { cerrarSesion(context) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -134,7 +134,7 @@ fun Header() {
                             painter = painterResource(id = com.example.traq.R.drawable.logout),
                             contentDescription = "LogOut icon",
                             tint = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(15.dp)
                         )
                     }
                 }
@@ -145,11 +145,11 @@ fun Header() {
     }
 }
 
-private fun logOut(context: Context) {
+private fun cerrarSesion(context: Context) {
     // Obtenemos los datos del usuario
-    val user = FirebaseAuth.getInstance().currentUser
+    val usuario = FirebaseAuth.getInstance().currentUser
     // Mostramos un Toast avisando que hemos cerrado la sesión
-    Toast.makeText(context, "Cerrando sesión de ${user?.displayName}", Toast.LENGTH_LONG).show()
+    Toast.makeText(context, "Cerrando sesión de ${usuario?.displayName}", Toast.LENGTH_LONG).show()
 
     // Cierra la sesión en Firebase
     FirebaseAuth.getInstance().signOut()
