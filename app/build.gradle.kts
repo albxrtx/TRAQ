@@ -44,11 +44,8 @@ android {
 
 dependencies {
     // Libreria de Firebase para la autentificacion
-    implementation("com.google.firebase:firebase-auth-ktx:21.1.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.android.gms:play-services-auth:20.0.1")
-
-    // Libreria de Coil para las fotos de perfil
-    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Libreria para Google Maps
     implementation("com.google.maps.android:maps-compose:4.2.0")

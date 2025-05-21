@@ -1,16 +1,11 @@
 package com.example.traq.components
 
-import android.R
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,33 +33,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.getString
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import coil.compose.AsyncImage
-import com.example.traq.BusScreen
-import com.example.traq.LogInScreen
-import com.example.traq.TrainScreen
-import com.example.traq.ui.theme.TraqTheme
+import com.example.traq.HomeScreen
+import com.example.traq.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import java.nio.file.WatchEvent
-import kotlin.Unit.toString
+import obtenerNombreUsuarioPorCorreo
+import kotlin.math.exp
 
 @Composable
 fun Header() {
     var expandido by remember { mutableStateOf(false) }
     val usuario = FirebaseAuth.getInstance().currentUser
-    val nombre = usuario?.displayName ?: "Usuario"
     val email = usuario?.email ?: "Sin correo"
-    val urlFotoPerfil = usuario?.photoUrl
+    var nombreUsuario by remember { mutableStateOf("") }
+
+    obtenerNombreUsuarioPorCorreo(email) { nombre ->
+        nombreUsuario = nombre
+    }
 
     val context = LocalContext.current
 
@@ -90,7 +80,7 @@ fun Header() {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = nombre,
+                    text = nombreUsuario,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -103,12 +93,12 @@ fun Header() {
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            AsyncImage(
-                model = urlFotoPerfil,
-                contentDescription = "Foto de perfil",
+            Icon(
+                painter = painterResource(id = R.drawable.account),
+                contentDescription = "Account Icon",
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
-                    .clip(CircleShape)
-                    .size(46.dp)
+                    .size(50.dp)
                     .clickable { expandido = !expandido })
         }
 
@@ -154,22 +144,11 @@ private fun cerrarSesion(context: Context) {
     // Cierra la sesión en Firebase
     FirebaseAuth.getInstance().signOut()
 
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        // Le pasamos en Web Client Id para que Google compruebe desde que app se realiza la acción
-        .requestIdToken(com.example.traq.R.string.default_web_client_id.toString())
-        // Le pasamos el correo del usuario
-        .requestEmail().build()
-
-    val googleSignInClient = GoogleSignIn.getClient(context, gso)
-
-    // Cerramos la sesión del usuario
-    googleSignInClient.signOut()
-
     // Mandamos al usuario a la pestaña de Inicio para volver a iniciar sesión
     context.startActivity(
         Intent(
-            context, LogInScreen::class.java
-        )
+            context, HomeScreen::class.java
+        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
     )
 
 }

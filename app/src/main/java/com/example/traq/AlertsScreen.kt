@@ -65,11 +65,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import obtenerNombreUsuarioPorCorreo
 import route1
 import route2
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 val db = Firebase.firestore
 
@@ -110,7 +112,7 @@ private fun AlertsScreenContent() {
 
     // Funcion que se "lanza" al cargar el Composable
     LaunchedEffect(Unit) {
-        db.collection("Mensajes").get()
+        db.collection("Alertas").get()
             .addOnSuccessListener { result ->
                 alertas = result.documents.map { doc ->
                     Alerta(
@@ -171,7 +173,7 @@ private fun AlertsScreenContent() {
                 )
             ) {
                 Icon(
-                    painter = painterResource(com.example.traq.R.drawable.add),
+                    painter = painterResource(R.drawable.add),
                     contentDescription = "Add icon",
                     tint = Color.White,
                 )
@@ -242,31 +244,31 @@ private fun AlertsScreenContent() {
     }
 }
 
-
 private fun anadirAlerta(linea: String, asunto: String, mensaje: String) {
-    // Creamos una instancia del usuario actual y recogemos su nombre
-    val user = FirebaseAuth.getInstance().currentUser
-    val nombreUsuario = user?.displayName
-    // Creamos un formato para la fecha y recogemos la hora actual del dispositivo
-    val formatoFecha = SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault())
-    val fecha = formatoFecha.format(Date())
+    val usuario = FirebaseAuth.getInstance().currentUser
+    val correo = usuario?.email ?: return
 
-    // Creamos un mensaje nuevo con los datos obtenidos anteriormente
-    val mensajeNuevo = hashMapOf(
-        "lineaTransporte" to linea,
-        "asunto" to asunto,
-        "mensaje" to mensaje,
-        "nombreUsuario" to nombreUsuario,
-        "fecha" to fecha
-    )
-    // Añadimos el mensaje a la colección
-    db.collection("Mensajes")
-        .add(mensajeNuevo)
-        .addOnSuccessListener { documentReference ->
-            Log.d("Firestore", "Mensaje añadido con id: $documentReference.id")
-        }.addOnFailureListener { e ->
-            Log.w("Firestore", "No se ha podido guardar el mensaje", e)
-        }
+    obtenerNombreUsuarioPorCorreo(correo) { nombreUsuario ->
+        val formatoFecha = SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault())
+        val fecha = formatoFecha.format(Date())
+
+        val mensajeNuevo = hashMapOf(
+            "lineaTransporte" to linea,
+            "asunto" to asunto,
+            "mensaje" to mensaje,
+            "nombreUsuario" to nombreUsuario,
+            "fecha" to fecha
+        )
+
+        db.collection("Alertas")
+            .add(mensajeNuevo)
+            .addOnSuccessListener { docRef ->
+                Log.d("Firestore", "Alerta añadida con ID: ${docRef.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error al guardar la alerta", e)
+            }
+    }
 }
 
 
@@ -303,7 +305,7 @@ private fun AlertCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(com.example.traq.R.drawable.bus),
+                painter = painterResource(R.drawable.bus),
                 contentDescription = "Message icon",
                 tint = Color.White,
                 modifier = Modifier.size(14.dp)
@@ -319,7 +321,7 @@ private fun AlertCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(com.example.traq.R.drawable.alert),
+                painter = painterResource(R.drawable.alert),
                 contentDescription = "Message icon",
                 tint = Color.White,
                 modifier = Modifier.size(14.dp)
