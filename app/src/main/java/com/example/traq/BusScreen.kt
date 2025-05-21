@@ -141,12 +141,12 @@ class BusScreen : AppCompatActivity() {
                 Icon(
                     painter = painterResource(com.example.traq.R.drawable.bus),
                     contentDescription = "Bus icon",
-                    tint = MaterialTheme.colorScheme.onBackground,
+                    tint = Color.White,
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
                     text = "${route.name} - ${route.city}",
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = Color.White
                 )
             }
 
@@ -169,7 +169,7 @@ class BusScreen : AppCompatActivity() {
                         // Mostramos el nombre de la parada mas cercana o un mensaje predeterminado
                         text =
                             "Parada cercana: ${paradaCercana?.name ?: "Ubicacion desconocida"}",
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = Color.White
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     // Llamamos a la función para mostrar el mapa
@@ -224,11 +224,12 @@ class BusScreen : AppCompatActivity() {
             // Creamos un Marker con la ubicacion y nombre de la parada maas cercana
             if (paradaCercana != null) {
                 Marker(
-                    title = "Parada mas cercana \n${paradaCercana.name}", state = MarkerState(
+                    title = "Parada mas cercana",snippet = "${paradaCercana.name}", state = MarkerState (
                         position = LatLng(
                             paradaCercana.latitude, paradaCercana.longitude
                         )
                     )
+
                 )
             }
             // Creamos lineas para conectar las paradas de cada ruta

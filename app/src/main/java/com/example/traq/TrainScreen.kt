@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,6 +38,7 @@ import com.example.traq.ui.theme.Blue70
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import com.example.traq.ui.theme.Blue50
 
@@ -60,7 +62,6 @@ class TrainScreen : AppCompatActivity() {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Header()
-            var context = LocalContext.current
             var billetes by remember { mutableStateOf<List<TrainTicket>>(emptyList()) }
             var cargando by remember { mutableStateOf(false) }
             var error by remember { mutableStateOf<String?>(null) }
@@ -83,40 +84,23 @@ class TrainScreen : AppCompatActivity() {
             ) {
                 when {
                     cargando -> {
-                        Text(text = "Cargando billetes")
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Cargando...",
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+
+                        }
                     }
 
                     error != null -> {
-                        AlertDialog(
-                            onDismissRequest = { },
-                            title = {
-                                Text(
-                                    text = "Error de conexión",
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                            },
-                            text = {
-                                Text(
-                                    text = "Hubo un problema al obtener los datos.",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            },
-                            confirmButton = {
-                                Button(
-                                    onClick = {
-                                        context.startActivity(
-                                            Intent(
-                                                context, TrainScreen::class.java
-                                            )
-                                        )
-                                    }, colors = ButtonDefaults.buttonColors(
-                                        containerColor = Blue50
-                                    )
-                                ) {
-                                    Text(text = "Refrescar", color = Color.White)
-                                }
-                            }
-                        )
+                        MostrarError()
                     }
 
                     else -> {
@@ -172,4 +156,41 @@ private fun TrainTicketCard(trayecto: String, tren: String, fecha: String, preci
             )
         }
     }
+}
+
+@Composable
+private fun MostrarError() {
+    val context = LocalContext.current
+
+    AlertDialog(
+        containerColor = MaterialTheme.colorScheme.primary,
+        onDismissRequest = { },
+        title = {
+            Text(
+                text = "Error de conexión",
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
+        text = {
+            Text(
+                text = "Hubo un problema al obtener los datos.",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    context.startActivity(
+                        Intent(
+                            context, TrainScreen::class.java
+                        )
+                    )
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = Blue50
+                )
+            ) {
+                Text(text = "Refrescar", color = Color.White)
+            }
+        }
+    )
 }
