@@ -1,9 +1,7 @@
 package com.example.traq
 
-import android.R
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

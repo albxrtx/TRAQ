@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import com.example.traq.ui.theme.Blue50
 import com.example.traq.ui.theme.TraqTheme
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class LogInScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

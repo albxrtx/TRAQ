@@ -50,17 +50,14 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 
-import routes
+import rutas
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import com.example.traq.ui.theme.Blue50
 import com.example.traq.ui.theme.Blue60
 import com.example.traq.ui.theme.Blue70
 
@@ -107,8 +104,8 @@ class BusScreen : AppCompatActivity() {
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.Start
             ) {
-                routes.forEach { route ->
-                    BusCard(route)
+                rutas.forEach { ruta ->
+                    BusCard(ruta)
                 }
             }
             Navbar()
@@ -145,7 +142,7 @@ class BusScreen : AppCompatActivity() {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "${route.name} - ${route.city}",
+                    text = "${route.nombre} - ${route.ciudad}",
                     color = Color.White
                 )
             }
@@ -160,7 +157,7 @@ class BusScreen : AppCompatActivity() {
                 ) {
                     // Creamos una variable con la parada mas cercana si el usuario ha concedido su ubicacion
                     val paradaCercana = if (userLat != null && userLong != null) {
-                        encontrarParaMasCercana(userLat!!, userLong!!, route.stops)
+                        encontrarParaMasCercana(userLat!!, userLong!!, route.paradas)
                     } else {
                         null
                     }
@@ -168,7 +165,7 @@ class BusScreen : AppCompatActivity() {
                         modifier = Modifier.fillMaxWidth(),
                         // Mostramos el nombre de la parada mas cercana o un mensaje predeterminado
                         text =
-                            "Parada cercana: ${paradaCercana?.name ?: "Ubicacion desconocida"}",
+                            "Parada cercana: ${paradaCercana?.nombre ?: "Ubicacion desconocida"}",
                         color = Color.White
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -187,7 +184,7 @@ class BusScreen : AppCompatActivity() {
         val cameraPositionState = rememberCameraPositionState {
             position = if (userLat != null && userLong != null) {
                 CameraPosition.fromLatLngZoom(
-                    LatLng(paradaCercana?.latitude ?: 40.00, paradaCercana?.longitude ?: 40.00), 16f
+                    LatLng(paradaCercana?.latitud ?: 40.00, paradaCercana?.longitud ?: 40.00), 16f
                 )
             } else {
                 CameraPosition.fromLatLngZoom(
@@ -203,30 +200,37 @@ class BusScreen : AppCompatActivity() {
                 .clip(RoundedCornerShape(10.dp)), cameraPositionState = cameraPositionState
         ) {
             // Recorremos cada parada y creamos un marca en ella
-            route.stops.forEach { stop ->
+            route.paradas.forEach { parada ->
                 Circle(
-                    center = LatLng(stop.latitude, stop.longitude),
+                    center = LatLng(parada.latitud, parada.longitud),
                     radius = 15.0,
-                    strokeColor = Color.Blue,
+                    strokeColor = Color.Red,
                     strokeWidth = 2f,
-                    fillColor = Color.Blue
+                    fillColor = Color.Red
                 )
             }
             if (userLat != null && userLong != null) {
                 Circle(
                     center = LatLng(userLat, userLong),
-                    radius = 10.0,
-                    strokeColor = Color.Green,
+                    radius = 20.0,
+                    strokeColor = Color(33, 150, 243, 166),
                     strokeWidth = 2f,
-                    fillColor = Color.Green
+                    fillColor = Color(33, 150, 243, 166)
+                )
+                Circle(
+                    center = LatLng(userLat, userLong),
+                    radius = 10.0,
+                    strokeColor = Color.Blue,
+                    strokeWidth = 2f,
+                    fillColor = Color.Blue
                 )
             }
             // Creamos un Marker con la ubicacion y nombre de la parada maas cercana
             if (paradaCercana != null) {
                 Marker(
-                    title = "Parada mas cercana",snippet = "${paradaCercana.name}", state = MarkerState (
+                    title = "Parada mas cercana",snippet = "${paradaCercana.nombre}", state = MarkerState (
                         position = LatLng(
-                            paradaCercana.latitude, paradaCercana.longitude
+                            paradaCercana.latitud, paradaCercana.longitud
                         )
                     )
 
@@ -234,11 +238,11 @@ class BusScreen : AppCompatActivity() {
             }
             // Creamos lineas para conectar las paradas de cada ruta
             Polyline(
-                points = route.stops.map {
+                points = route.paradas.map {
                     LatLng(
-                        it.latitude, it.longitude
+                        it.latitud, it.longitud
                     )
-                }, color = Color.Blue, width = 10f
+                }, color = Color.Red, width = 10f
             )
 
         }
@@ -255,7 +259,7 @@ class BusScreen : AppCompatActivity() {
         ) {
             // Solicitamos permisos para obtener la ubicación
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            // Evitamos que el codigo se siga ejecutando hasta que el usuario no haya aceptado los permisos
+            // Salimos de la funcion si el usuario no aacepta los permisos
             return
         }
         // Una vez que el usuario haya aceptado los permisos obtenemos su ubicacion
@@ -296,8 +300,8 @@ class BusScreen : AppCompatActivity() {
         for (stop in stops) {
             // Por cada parada creamos un objeto de tipo Location
             val ubicacionParada = Location("stop").apply {
-                latitude = stop.latitude
-                longitude = stop.longitude
+                latitude = stop.latitud
+                longitude = stop.longitud
             }
             // Calculamos la distancia entre las dos ubicaciones
             val distanciaEntreUbicaciones = ubicacionUsuario.distanceTo(ubicacionParada)

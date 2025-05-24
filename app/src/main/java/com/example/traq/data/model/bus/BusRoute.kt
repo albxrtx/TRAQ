@@ -1,19 +1,19 @@
 data class BusRoute(
-    val name: String,
-    val city: String,
-    val stops: List<BusStop>,
+    val nombre: String,
+    val ciudad: String,
+    val paradas: List<BusStop>,
 )
 
-val route1 = BusRoute(
-    name = "Urbano",
-    city = "Seseña",
-    stops = stops1,
+val ruta1 = BusRoute(
+    nombre = "Urbano",
+    ciudad = "Seseña",
+    paradas = paradas1,
 )
 
-val route2 = BusRoute(
-    name = "Interbus",
-    city = "Madrid/Seseña",
-    stops = stops2,
+val ruta2 = BusRoute(
+    nombre = "Interbus",
+    ciudad = "Madrid/Seseña",
+    paradas = paradas2,
 )
 
-val routes = listOf<BusRoute>(route1, route2)
+val rutas = listOf<BusRoute>(ruta1, ruta2)

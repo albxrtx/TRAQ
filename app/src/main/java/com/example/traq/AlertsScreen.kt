@@ -29,16 +29,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,14 +42,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.traq.components.Header
 import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.Blue50
@@ -66,8 +56,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import obtenerNombreUsuarioPorCorreo
-import route1
-import route2
+import ruta1
+import ruta2
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -221,8 +211,8 @@ private fun AlertsScreenContent() {
                             Column {
                                 DropwdownMenu(
                                     opciones = listOf(
-                                        "${route1.name} - ${route1.city}",
-                                        "${route2.name} - ${route2.city}"
+                                        "${ruta1.nombre} - ${ruta1.ciudad}",
+                                        "${ruta2.nombre} - ${ruta2.ciudad}"
                                     ),
                                     painter = painterResource(id = R.drawable.bus),
                                     onSeleccionChange = { linea = it })
