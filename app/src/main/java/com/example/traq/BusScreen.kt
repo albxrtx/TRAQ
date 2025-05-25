@@ -1,4 +1,4 @@
-package com.example.traq
+package com.traq.app
 
 import BusRoute
 import BusStop
@@ -37,7 +37,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import com.example.traq.components.Header
-import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.TraqTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -53,6 +52,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import rutas
 
 import android.Manifest
+import android.R
 import android.location.Location
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
@@ -60,6 +60,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
 import com.example.traq.ui.theme.Blue60
 import com.example.traq.ui.theme.Blue70
+import com.traq.app.components.Navbar
 
 
 class BusScreen : AppCompatActivity() {
@@ -136,7 +137,7 @@ class BusScreen : AppCompatActivity() {
                     .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
-                    painter = painterResource(com.example.traq.R.drawable.bus),
+                    painter = painterResource(com.traq.app.R.drawable.bus),
                     contentDescription = "Bus icon",
                     tint = Color.White,
                     modifier = Modifier.size(20.dp)
@@ -184,7 +185,7 @@ class BusScreen : AppCompatActivity() {
         val cameraPositionState = rememberCameraPositionState {
             position = if (userLat != null && userLong != null) {
                 CameraPosition.fromLatLngZoom(
-                    LatLng(paradaCercana?.latitud ?: 40.00, paradaCercana?.longitud ?: 40.00), 16f
+                    LatLng(paradaCercana?.latitud ?: 40.10451921563171, paradaCercana?.longitud ?: -3.6939612498723546), 16f
                 )
             } else {
                 CameraPosition.fromLatLngZoom(

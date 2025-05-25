@@ -1,4 +1,4 @@
-package com.example.traq.components
+package com.traq.app.components
 
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -20,16 +20,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.traq.BusScreen
-import com.example.traq.SubwayScreen
-import com.example.traq.TrainScreen
+import com.traq.app.BusScreen
+import com.traq.app.SubwayScreen
+import com.traq.app.TrainScreen
 import android.app.Activity
 import android.content.Context
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.painter.Painter
-import com.example.traq.AlertsScreen
-import com.example.traq.R
+import com.traq.app.AlertsScreen
+import com.traq.app.R
 
 @Composable
 fun Navbar() {

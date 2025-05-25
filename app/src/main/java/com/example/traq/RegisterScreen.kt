@@ -1,4 +1,4 @@
-package com.example.traq
+package com.traq.app
 
 import android.content.Intent
 import android.os.Bundle
@@ -170,6 +170,8 @@ private fun RegisterScreenContent() {
                             guardarUsuario(nombreUsuario, correo)
                             context.startActivity(Intent(context, BusScreen::class.java))
                         } else {
+                            val errorMsg = task.exception?.message ?: "Error desconocido"
+                            Log.e("RegistroUsuario", "Error al crear usuario: $errorMsg")
                             Toast.makeText(
                                 context, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT
                             ).show()

@@ -37,7 +37,7 @@ fun DropwdownMenu(opciones: List<String>, painter: Painter, onSeleccionChange: (
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(
                     modifier = Modifier.size(15.dp),
-                    painter = painterResource(com.example.traq.R.drawable.dropdown),
+                    painter = painterResource(com.traq.app.R.drawable.dropdown),
                     contentDescription = "Dropdown icon",
                     tint = MaterialTheme.colorScheme.onBackground,
                 )

@@ -1,4 +1,4 @@
-package com.example.traq
+package com.traq.app
 
 import android.os.Bundle
 import androidx.activity.compose.setContent

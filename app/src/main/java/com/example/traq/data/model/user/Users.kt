@@ -1,5 +1,4 @@
 import android.util.Log
-import com.example.traq.Alerta
 import com.google.firebase.firestore.FirebaseFirestore
 
 data class Users(

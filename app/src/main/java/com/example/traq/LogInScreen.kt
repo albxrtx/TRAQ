@@ -1,4 +1,4 @@
-package com.example.traq
+package com.traq.app
 
 import android.content.Intent
 import android.os.Bundle

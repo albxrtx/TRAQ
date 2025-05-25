@@ -1,5 +1,6 @@
-package com.example.traq
+package com.traq.app
 
+import android.R
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -74,7 +75,7 @@ class HomeScreen : ComponentActivity() {
             ) {
                 Image(
                     modifier = Modifier.size(400.dp),
-                    painter = painterResource(R.drawable.log_in_image),
+                    painter = painterResource(com.traq.app.R.drawable.log_in_image),
                     contentDescription = "LogIn image"
                 )
                 Text(

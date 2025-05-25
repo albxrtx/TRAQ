@@ -38,8 +38,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseAuth
-import com.example.traq.HomeScreen
-import com.example.traq.R
+import com.traq.app.HomeScreen
+import com.traq.app.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import obtenerNombreUsuarioPorCorreo
@@ -121,7 +121,7 @@ fun Header() {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
-                            painter = painterResource(id = com.example.traq.R.drawable.logout),
+                            painter = painterResource(id = com.traq.app.R.drawable.logout),
                             contentDescription = "LogOut icon",
                             tint = Color.Black,
                             modifier = Modifier.size(15.dp)

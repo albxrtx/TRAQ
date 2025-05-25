@@ -1,4 +1,4 @@
-package com.example.traq
+package com.traq.app
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.traq.components.Header
-import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.TraqTheme
+import com.traq.app.components.Navbar
 
 class SubwayScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

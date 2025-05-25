@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.res.fontResource
-import com.example.traq.R
+import com.traq.app.R
 
 val Poppins = FontFamily(
     Font(R.font.poppins_black, FontWeight.Black),

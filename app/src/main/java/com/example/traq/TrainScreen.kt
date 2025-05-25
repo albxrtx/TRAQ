@@ -1,4 +1,4 @@
-package com.example.traq
+package com.traq.app
 
 import TrainTicket
 import android.content.Intent
@@ -28,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.traq.components.Header
-import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.TraqTheme
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +40,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import com.example.traq.ui.theme.Blue50
+import com.traq.app.components.Navbar
 
 class TrainScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

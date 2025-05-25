@@ -1,4 +1,4 @@
-package com.example.traq
+package com.traq.app
 
 import CustomTextField
 import DropwdownMenu
@@ -47,14 +47,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.traq.components.Header
-import com.example.traq.components.Navbar
 import com.example.traq.ui.theme.Blue50
 import com.example.traq.ui.theme.Blue70
-import com.example.traq.ui.theme.TraqTheme
+import com.traq.app.components.Navbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.example.traq.ui.theme.TraqTheme
 import obtenerNombreUsuarioPorCorreo
 import ruta1
 import ruta2

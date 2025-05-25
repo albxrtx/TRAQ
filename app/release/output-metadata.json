@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.traq",
+  "applicationId": "com.traq.app",
   "variantName": "release",
   "elements": [
     {
